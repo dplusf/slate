@@ -3,12 +3,12 @@ title: API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
+  # - ruby
   - python
-  - javascript
+  # - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='http://eepurl.com/duq3j5'>Sign Up for Beta Test</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -19,80 +19,120 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the monapi.io API! You can use our API to access monapi.io API
+endpoints, which can get risk, check and reputation based information for
+digital assets like IP's, Domain's and E-Mail Addresses in our database.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell and Python! You can view code
+examples in the dark area to the right, and you can switch the programming
+language of the examples with the tabs in the top right.
 
-This example API documentation page was created with [Slate](https://github.com/lord/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Our API is under active development, and we plan to release more functionality.
+If there are specific features that you need, please [contact us](http://monapi.io/contact).
 
-# Authentication
+## Authentication
 
 > To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
 
 ```python
 import kittn
 
-api = kittn.authorize('meowmeowmeow')
+api = kittn.authorize('your_api_key')
 ```
 
 ```shell
 # With shell, you can just pass the correct header with each request
 curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+  -H "Authorization: your_api_key"
 ```
 
-```javascript
-const kittn = require('kittn');
+> Make sure to replace `your_api_key` with your API key.
 
-let api = kittn.authorize('meowmeowmeow');
-```
+You can access our API with or without API Keys.
+If you want to try out our API you can do so immediately within our throttling
+thresholds.
 
-> Make sure to replace `meowmeowmeow` with your API key.
+You can register for our public Beta Test a new monapi.io API key at our [developer portal](http://eepurl.com/duq3j5).
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+monapi.io expects for the API key to be included in all API requests to the server in a header that looks like the following for our authenticated users:
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
+`Authorization: your_api_key`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You can always use our API within the throttling thresholds for free!
 </aside>
 
-# Kittens
 
-## Get All Kittens
+## Throttling
 
-```ruby
-require 'kittn'
+To improve our application's security and performance we rate limit access to
+our API.
+Our API will always be accessible for not authenticated Users.
+Rate Limit is 10 Requests per Hour when not sending API Keys in your Headers
+Request.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+
+# IP
 
 ```python
-import kittn
+from requests import get
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+loc = get('https://api.monapi.io/api/v1/checkip/8.8.8.8')
+# print loc.json()  # python 2.x
+print(loc.json())  # python 3.x
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl "https://api.monapi.io/api/v1/checkip/8.8.8.8"
 ```
 
-```javascript
-const kittn = require('kittn');
+> The above command returns JSON structured like this:
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+```json
+{
+    "list-count": 2,
+    "ip": "8.8.8.8",
+    "blacklists": {
+        "COINBL_HOSTS": "organizations",
+        "PACKETMAIL_EMERGING_IPS": "reputation"
+    }
+}
+```
+
+Returns Blacklists for a given IPv4 Address
+
+The IP Check will test an IPv4 Address against our aggregated database with more than 100 Blacklists and threat intelligence datasources. We update our database up to 144 times per day, achieving near real time up to date data.
+The Test Duration is fast and usually don't take longer than 100 milliseconds.
+
+GET /IPv4/
+
+<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+
+### HTTP Request
+
+`GET https://api.monapi.io/api/v1/checkdomain/<ip>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+IP | The IPv4 Address for which the check should be executed.
+
+
+# Domain
+
+```python
+from urllib2 import Request, urlopen
+
+request = Request("https://api.monapi.io/api/v1/checkdomain/{domain}")
+request.add_header("Authorization", "your_api_key")
+result = urlopen(request)
+
+print result.read()
+```
+
+```shell
+curl "https://api.monapi.io/api/v1/checkdomain/foobar.net" -H "Authorization: your_api_key" -H "Accept: application/json"
 ```
 
 > The above command returns JSON structured like this:
@@ -100,140 +140,48 @@ let kittens = api.kittens.get();
 ```json
 [
   {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+      "blacklist": {
+          "COINBL_HOSTS_BROWSER": "organizations",
+          "HPHOSTS_WRZ": "reputation",
+          "RANSOMWARE_FEED": "malware",
+          "HPHOSTS_MMT": "reputation",
+          "THREATCROWD": "malware",
+          "COINBL_HOSTS": "organizations",
+          "HPHOSTS_PHA": "reputation",
+          "HPHOSTS_GRM": "spam"
+      },
+      "ip": "69.172.201.153",
+      "domain": "foobar.net",
+      "mx_blacklist": false,
+      "ns_blacklist": false
   }
 ]
 ```
 
-This endpoint retrieves all kittens.
+Returns Blacklists for a given Domain
+
+The Domain Check will test a Domain Adress against our aggregated database with more than 100 Blacklists and threat intelligence datasources. In addition we resolve the ip address of the domain as well as NS and MX Records and search our database for those additional IP addresses too.
+The Test Duration is fast and usually don't take longer than 100 milliseconds.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`GET https://api.monapi.io/api/v1/checkdomain/<domain>`
 
-### Query Parameters
+### URL Parameters
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+Parameter | Description
+--------- | -----------
+Domain | The Domain Address you wish to check against our database.
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+If Domin is not blacklisted you will get an 404 Error Message: not blacklisted": "nothing to see here"
 </aside>
 
-## Get a Specific Kitten
+# E-Mail
+coming soon
 
-```ruby
-require 'kittn'
+# Geolocation
+coming soon
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
-
+# ASN
+coming soon
