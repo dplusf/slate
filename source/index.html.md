@@ -1,5 +1,5 @@
 ---
-title: API Reference
+title: monapi API Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
@@ -19,8 +19,8 @@ search: true
 
 # Introduction
 
-Welcome to the monapi.io API! You can use our API to access monapi.io API
-endpoints, which can get risk, check and reputation based information for
+Welcome to the monapi.io API! You can use our API to access our endpoints,
+which provides risk, check and reputation based information for
 digital assets like IP's, Domain's and E-Mail Addresses in our database.
 
 We have language bindings in Shell and Python! You can view code
@@ -29,6 +29,44 @@ language of the examples with the tabs in the top right.
 
 Our API is under active development, and we plan to release more functionality.
 If there are specific features that you need, please [contact us](http://monapi.io/contact).
+
+
+## Server Address
+
+The base server address is: [https://api.monapi.io](https://api.monapi.io)
+
+Please note that HTTPS is suggested. HTTP will be redirected to HTTPS with 301 Status Code. You will not be able to connect through unencrypted HTTP.
+
+
+## Throttling
+
+To improve our application's security and performance we rate limit access to
+our API.
+Our API will always be accessible for not authenticated Users.
+Rate Limit is 10 Requests per Hour when not sending API Keys in your Headers
+Request.
+Request was throttled. Expected available in 3498.0 seconds."
+
+## Limits / Throttling
+
+To avoid individual rampant applications degrading the overall user experience and to improve our application's security performance we rate limit access to our API.
+If you hit the Rate Limit you will get following message:
+
+`"Request was throttled. Expected available in 3498.0 seconds."`
+
+The monapi API has usage limits to avoid individual rampant applications degrading the overall user experience. There are two layers of limits, the first cover a shorter period of time and the second a longer period. This enables you to "burst" requests for shorter periods. There are two HTTP headers in every response describing your limits status.
+
+The response headers are:
+
+Req-Limit-Short
+Req-Limit-Long
+An example of the values of these headers:
+
+Req-Limit-Short: Remaining: 394 Time until reset: 3589
+Req-Limit-Long: Remaining: 71994 Time until reset: 2591989
+In this case, we can see that the user has 394 requests left until the short limit is reached. In 3589 seconds, the short limit will be reset. In similar fashion, the long limit has 71994 requests left, and will be reset in 2591989 seconds.
+
+If you feel restricted by these limits, please feel free to contact Pingdom support and request a higher limit. The limits are primarily here to protect the system from poorly coded applications, not to restrict you as a user.
 
 ## Authentication
 
@@ -61,15 +99,6 @@ monapi.io expects for the API key to be included in all API requests to the serv
 <aside class="notice">
 You can always use our API within the throttling thresholds for free!
 </aside>
-
-
-## Throttling
-
-To improve our application's security and performance we rate limit access to
-our API.
-Our API will always be accessible for not authenticated Users.
-Rate Limit is 10 Requests per Hour when not sending API Keys in your Headers
-Request.
 
 
 # IP
