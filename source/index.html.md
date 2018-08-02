@@ -431,7 +431,337 @@ If the Domain is not blacklisted you will get an 404 Error Message: not blacklis
 coming soon
 
 # Geolocation
-coming soon
+
+> Example: get geolocation data for IP 1.1.1.1
+
+```shell
+curl "https://api.monapi.io/api/v1/geoip/1.1.1.1"
+```
+
+```python
+import requests
+
+url = "https://api.monapi.io/api/v1/geoip/{ip}"
+
+headers = {
+    'accept': "application/json",
+    'authorization': "your_api_key"
+    }
+
+response = requests.request("GET", url, headers=headers)
+
+print(response.text)
+print(response.status_code)
+```
+
+```php
+<?php
+
+// IP to geolocate
+$ip = '1.1.1.1';
+
+$authToken = 'your_api_key';
+
+// Init cURL
+$curl = curl_init();
+
+// Set URL & some options
+curl_setopt_array($curl, array(
+    CURLOPT_RETURNTRANSFER => 1,
+    CURLOPT_URL => 'https://api.monapi.io/api/v1/geoip/' . $ip
+));
+
+// Set the authorization header
+if ($authToken) {
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    	'Authorization: Token ' . $authToken
+	));
+}
+
+// Send the request
+$response = curl_exec($curl);
+
+// Check for cURL & HTTP errors or return response content
+if (curl_errno($curl)) {
+  echo 'Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl) . "\n";
+} else {
+  switch ($httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE)) {
+    case 200:  # OK
+      echo 'OK' . "\n";
+      $responseObject = json_decode($response);
+      var_dump($responseObject);
+      break;
+    case 404:
+      echo 'Resource not found' . "\n";
+      $responseObject = json_decode($response);
+      var_dump($responseObject);
+      break;  
+    default:
+      echo 'Unexpected HTTP-Code: ' . $httpCode . "\n";
+  }
+}
+// Close request to clear up some resources
+curl_close($curl);
+```
+
+```javascript
+var https = require('https');
+
+// The IP to geolocate
+var ip = '1.1.1.1'
+
+// Authorization token
+var authToken = 'Token your_api_key';
+
+var options = {
+  host: 'api.monapi.io',
+  port: 443,
+  path: '/api/v1/geoip/' + ip,
+  headers: {
+  }
+};
+
+if (authToken) {
+   options.headers['Authorization'] = 'Token ' + authToken;
+}
+
+var request = https.get(options, function(res) {
+   var body = "";
+   res.on('data', function(data) {
+      body += data;
+   });
+   res.on('end', function() {
+     // Check response by status
+     switch (res.statusCode) {
+       case 200:
+         console.log('HTTP Status OK, 200');
+         console.log('Response DATA', body);
+         break;
+       case 404:
+         console.log('Resource not found, 404');
+         console.log('Response DATA', body);
+         break;
+       default:
+         console.log('Unknown HTTP Status Code', res.statusCode);
+         break;
+     }
+   })
+   res.on('error', function(e) {
+      console.log("Got HTTP Response error: " + e.message);
+   });
+});
+
+request.on('error', (e) => {
+  console.error('Request error:', e);
+});
+
+request.end();
+```
+
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "city": "Research",
+    "country": "Australia",
+    "country_names": {
+        "de": "Australien",
+        "en": "Australia",
+        "es": "Australia",
+        "fr": "Australie",
+        "ja": "\u30aa\u30fc\u30b9\u30c8\u30e9\u30ea\u30a2",
+        "pt-BR": "Austr\u00e1lia",
+        "ru": "\u0410\u0432\u0441\u0442\u0440\u0430\u043b\u0438\u044f",
+        "zh-CN": "\u6fb3\u5927\u5229\u4e9a"
+    },
+    "ip": "1.1.1.1",
+    "iso_code": "AU",
+    "latitude": -37.7,
+    "longitude": 145.1833,
+    "postal": "3095"
+}
+```
+
+Returns Geolocation data for a given IPv4 Address or Domain
+
+You can supply an IP address
+to lookup. The Response include all important data for your application like city, postal, country, iso_code, latitude and longitude. See the whole response with all returned data in the example to the right.
+
+
+GET /IPv4/
+
+<aside class="success">
+If we dont have any geolocation data for that ip you will get an 404 Error Message: not found": "nothing to see here"
+</aside>
+
+### HTTP Request
+
+`GET https://api.monapi.io/api/v1/geoip/<ip>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+IP | The IPv4 Address or Domain you want to geolocate.
 
 # ASN
-coming soon
+
+> Example: get ASN data for IP 1.1.1.1
+
+```shell
+curl "https://api.monapi.io/api/v1/asn/1.1.1.1"
+```
+
+```python
+import requests
+
+url = "https://api.monapi.io/api/v1/asn/{ip}"
+
+headers = {
+    'accept': "application/json",
+    'authorization': "your_api_key"
+    }
+
+response = requests.request("GET", url, headers=headers)
+
+print(response.text)
+print(response.status_code)
+```
+
+```php
+<?php
+
+// IP you want ASN data for
+$ip = '1.1.1.1';
+
+$authToken = 'your_api_key';
+
+// Init cURL
+$curl = curl_init();
+
+// Set URL & some options
+curl_setopt_array($curl, array(
+    CURLOPT_RETURNTRANSFER => 1,
+    CURLOPT_URL => 'https://api.monapi.io/api/v1/asn/' . $ip
+));
+
+// Set the authorization header
+if ($authToken) {
+	curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+    	'Authorization: Token ' . $authToken
+	));
+}
+
+// Send the request
+$response = curl_exec($curl);
+
+// Check for cURL & HTTP errors or return response content
+if (curl_errno($curl)) {
+  echo 'Error: "' . curl_error($curl) . '" - Code: ' . curl_errno($curl) . "\n";
+} else {
+  switch ($httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE)) {
+    case 200:  # OK
+      echo 'OK' . "\n";
+      $responseObject = json_decode($response);
+      var_dump($responseObject);
+      break;
+    case 404:
+      echo 'Resource not found' . "\n";
+      $responseObject = json_decode($response);
+      var_dump($responseObject);
+      break;  
+    default:
+      echo 'Unexpected HTTP-Code: ' . $httpCode . "\n";
+  }
+}
+// Close request to clear up some resources
+curl_close($curl);
+```
+
+```javascript
+var https = require('https');
+
+// The IP you want ASN data for
+var ip = '1.1.1.1'
+
+// Authorization token
+var authToken = 'Token your_api_key';
+
+var options = {
+  host: 'api.monapi.io',
+  port: 443,
+  path: '/api/v1/asn/' + ip,
+  headers: {
+  }
+};
+
+if (authToken) {
+   options.headers['Authorization'] = 'Token ' + authToken;
+}
+
+var request = https.get(options, function(res) {
+   var body = "";
+   res.on('data', function(data) {
+      body += data;
+   });
+   res.on('end', function() {
+     // Check response by status
+     switch (res.statusCode) {
+       case 200:
+         console.log('HTTP Status OK, 200');
+         console.log('Response DATA', body);
+         break;
+       case 404:
+         console.log('Resource not found, 404');
+         console.log('Response DATA', body);
+         break;
+       default:
+         console.log('Unknown HTTP Status Code', res.statusCode);
+         break;
+     }
+   })
+   res.on('error', function(e) {
+      console.log("Got HTTP Response error: " + e.message);
+   });
+});
+
+request.on('error', (e) => {
+  console.error('Request error:', e);
+});
+
+request.end();
+```
+
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "ip": "1.1.1.1",
+    "system_number": 13335,
+    "system_organization": "Cloudflare Inc"
+}
+```
+
+Returns autonomous system number (ASN) data for a given IPv4 Address
+
+What is an Autonomous System (AS)?
+
+An AS is a group of IP networks operated by one or more network operator(s) that has a single and clearly defined external routing policy.
+
+GET /IPv4/
+
+<aside class="success">
+If we don't have any ASN data for that ip you will get an 404 Error Message: not found": "nothing to see here"
+</aside>
+
+### HTTP Request
+
+`GET https://api.monapi.io/api/v1/asn/<ip>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+IP | The IPv4 Address you want ASN data for.
