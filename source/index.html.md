@@ -8,7 +8,7 @@ language_tabs: # must be one of https://git.io/vQNgJ
   - javascript
 
 toc_footers:
-  - <a href='http://eepurl.com/duq3j5'>Sign Up for Beta Test</a>
+  - <a href='http://eepurl.com/duq3j5'>Sign Up for Free!</a>
   - <a href='https://github.com/lord/slate'>Documentation Powered by Slate</a>
 
 includes:
@@ -97,13 +97,13 @@ You can always use our API within the throttling thresholds for free!
 > Example: Is IP 1.1.1.1 blacklisted?
 
 ```shell
-curl "https://api.monapi.io/api/v1/checkip/1.1.1.1"
+curl "https://api.monapi.io/v1/checkip/1.1.1.1"
 ```
 
 ```python
 import requests
 
-url = "https://api.monapi.io/api/v1/checkip/{ip}"
+url = "https://api.monapi.io/v1/checkip/{ip}"
 
 headers = {
     'accept': "application/json",
@@ -130,7 +130,7 @@ $curl = curl_init();
 // Set URL & some options
 curl_setopt_array($curl, array(
     CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => 'https://api.monapi.io/api/v1/checkip/' . $ip
+    CURLOPT_URL => 'https://api.monapi.io/v1/checkip/' . $ip
 ));
 
 // Set the authorization header
@@ -247,7 +247,7 @@ If the IP is not blacklisted you will get an 404 Error Message: not blacklisted"
 
 ### HTTP Request
 
-`GET https://api.monapi.io/api/v1/checkdomain/<ip>`
+`GET https://api.monapi.io/v1/checkip/<ip>`
 
 ### URL Parameters
 
@@ -259,14 +259,14 @@ IP | The IPv4 Address for which the check should be executed.
 # Domain
 
 ```shell
-curl "https://api.monapi.io/api/v1/checkdomain/foobar.net" \
+curl "https://api.monapi.io/v1/checkdomain/foobar.net" \
 -H "Authorization: Token your_api_key" -H "Accept: application/json"
 ```
 
 ```python
 import requests
 
-url = "https://api.monapi.io/api/v1/checkdomain/{domain}"
+url = "https://api.monapi.io/v1/checkdomain/{domain}"
 
 headers = {
     'accept': "application/json",
@@ -349,7 +349,7 @@ $curl = curl_init();
 // Set URL & some options
 curl_setopt_array($curl, array(
     CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => 'https://api.monapi.io/api/v1/checkip/' . $domain
+    CURLOPT_URL => 'https://api.monapi.io/v1/checkip/' . $domain
 ));
 
 // Set the authorization header
@@ -415,7 +415,7 @@ The Test Duration is fast and usually don't take longer than 100 milliseconds.
 
 ### HTTP Request
 
-`GET https://api.monapi.io/api/v1/checkdomain/<domain>`
+`GET https://api.monapi.io/v1/checkdomain/<domain>`
 
 ### URL Parameters
 
@@ -435,13 +435,13 @@ coming soon
 > Example: get geolocation data for IP 1.1.1.1
 
 ```shell
-curl "https://api.monapi.io/api/v1/geoip/1.1.1.1"
+curl "https://api.monapi.io/v1/geoip/1.1.1.1"
 ```
 
 ```python
 import requests
 
-url = "https://api.monapi.io/api/v1/geoip/{ip}"
+url = "https://api.monapi.io/v1/geoip/{ip}"
 
 headers = {
     'accept': "application/json",
@@ -468,7 +468,7 @@ $curl = curl_init();
 // Set URL & some options
 curl_setopt_array($curl, array(
     CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => 'https://api.monapi.io/api/v1/geoip/' . $ip
+    CURLOPT_URL => 'https://api.monapi.io/v1/geoip/' . $ip
 ));
 
 // Set the authorization header
@@ -597,7 +597,7 @@ If we dont have any geolocation data for that ip you will get an 404 Error Messa
 
 ### HTTP Request
 
-`GET https://api.monapi.io/api/v1/geoip/<ip>`
+`GET https://api.monapi.io/v1/geoip/<ip>`
 
 ### URL Parameters
 
@@ -610,13 +610,13 @@ IP | The IPv4 Address or Domain you want to geolocate.
 > Example: get ASN data for IP 1.1.1.1
 
 ```shell
-curl "https://api.monapi.io/api/v1/asn/1.1.1.1"
+curl "https://api.monapi.io/v1/asn/1.1.1.1"
 ```
 
 ```python
 import requests
 
-url = "https://api.monapi.io/api/v1/asn/{ip}"
+url = "https://api.monapi.io/v1/asn/{ip}"
 
 headers = {
     'accept': "application/json",
@@ -643,7 +643,7 @@ $curl = curl_init();
 // Set URL & some options
 curl_setopt_array($curl, array(
     CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => 'https://api.monapi.io/api/v1/asn/' . $ip
+    CURLOPT_URL => 'https://api.monapi.io/v1/asn/' . $ip
 ));
 
 // Set the authorization header
@@ -758,7 +758,7 @@ If we don't have any ASN data for that ip you will get an 404 Error Message: not
 
 ### HTTP Request
 
-`GET https://api.monapi.io/api/v1/asn/<ip>`
+`GET https://api.monapi.io/v1/asn/<ip>`
 
 ### URL Parameters
 
